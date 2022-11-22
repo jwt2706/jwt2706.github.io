@@ -21,7 +21,7 @@ p {
 .container {
     width:60%;
     border:3px solid black;
-    border-radius:4px;
-    background:grey;
-    opacity:80%;
+    border-radius:10px;
+    background:lightgray;
+    opacity: 30%;
 }
