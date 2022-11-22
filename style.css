@@ -1,0 +1,22 @@
+body {
+    font-family:'Courier New', Courier, monospace;
+    animation-name:wallpaperAnimation;
+    animation-iteration-count:infinite;
+    animation-duration:15s;
+}
+
+@keyframes wallpaperAnimation {
+    0% {background-color:rgb(241, 131, 131);}
+    20% {background-color:rgb(255, 206, 115);}
+    40% {background-color:rgb(156, 202, 64);}
+    60% {background-color: lightblue;}
+    80% {background-color:rgb(172, 76, 172);}
+    100% {background-color:rgb(241, 131, 131);}
+}
+
+.transparency {
+    border:3px solid black;
+    border-radius:4px;
+    background:grey;
+    opacity:80%;
+}
