@@ -10,7 +10,7 @@ body {
     20% {background-color:rgb(255, 206, 115);}
     40% {background-color:rgb(156, 202, 64);}
     60% {background-color: rgb(173, 216, 230);}
-    80% {background-color:rgb(172, 76, 172);}
+    80% {background-color:rgb(182, 114, 182);}
     100% {background-color:rgb(241, 131, 131);}
 }
 
@@ -22,6 +22,5 @@ p {
     width:60%;
     border:3px solid black;
     border-radius:10px;
-    background:lightgray;
-    opacity: 30%;
+    opacity:100%;
 }
