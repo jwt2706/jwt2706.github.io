@@ -80,11 +80,13 @@ const ProjectFetcher: React.FC = () => {
                                         <p className="text-sm text-gray-500">Built with: {languages[repo.id]?.join(", ") || "Loading..."}</p>
                                         <p className="text-left mt-4 text-sm min-[400px]:text-lg">{repo.description}</p>
                                     </div>
-                                    <div className="flex gap-2 text-2xl">
-                                        <FaGithub className="hover:scale-125 transition-transform duration-300 ease-in-out" />
+                                    <div className="flex gap-4 text-2xl">
                                         {repo.homepage && (
-                                            <FaExternalLinkAlt className="hover:scale-125 transition-transform duration-300 ease-in-out" />
+                                            <a href={repo.homepage} target="_blank" rel="noopener noreferrer">
+                                                <FaExternalLinkAlt className="hover:scale-125 transition-transform duration-300 ease-in-out" />
+                                            </a>
                                         )}
+                                        <FaGithub className="hover:scale-125 transition-transform duration-300 ease-in-out" />
                                     </div>
                                 </div>
                             </a>
