@@ -46,6 +46,17 @@ const Home: React.FC = () => {
 				<Logos />
 				<hr className="my-8 border-t-2 border-green-500 w-full" />
 				<Intro />
+				{/* Blog Advertisement Section */}
+				<div className="my-6 p-4 rounded-lg bg-green-700 bg-opacity-20 text-white text-center shadow-lg border border-green-500">
+				<h3 className="text-2xl font-bold mb-2">Check out my new blog!</h3>
+				<a
+					href="https://blog.jthome.net"
+					className="inline-block px-4 py-2 mt-2 bg-green-500 hover:bg-green-400 text-black font-semibold rounded transition-colors duration-200"
+				>
+					blog.jthome.net
+				</a>
+				<p className="mt-2 text-sm text-green-200">Coding, projects, shower thoughts and more - updated regularly (kind of)!</p>
+				</div>
 				<hr className="my-8 border-t-2 border-green-500 w-full" />
 				<div className="font-bold mb-8 text-center">
 					<h3 className="text-xl sm:text-2xl">Here are a few of my projects:</h3>
