@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
+import { FaGithub, FaExternalLinkAlt, FaUsers, FaArchive } from "react-icons/fa";
 import Logos from "./Logos";
 
 interface Repo {
@@ -12,15 +12,24 @@ interface Repo {
     created_at: string;
 }
 
+interface Org {
+    id: number;
+    login: string;
+    avatar_url: string;
+    html_url: string;
+}
+
 const ProjectFetcher: React.FC = () => {
     const [repos, setRepos] = useState<Repo[]>([]);
     const [languages, setLanguages] = useState<{ [key: number]: string[] }>({});
+    const [orgs, setOrgs] = useState<Org[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const cardsRef = useRef<HTMLDivElement[]>([]);
 
     useEffect(() => {
-        fetch("https://api.github.com/users/jwt2706/repos")
+        // Fetch personal repos
+        const fetchRepos = fetch("https://api.github.com/users/jwt2706/repos")
             .then((response) => {
                 if (!response.ok) {
                     throw new Error(`Error: ${response.status}`);
@@ -48,12 +57,26 @@ const ProjectFetcher: React.FC = () => {
                             }));
                         });
                 });
+            });
 
-                setLoading(false);
+        // Fetch organizations
+        const fetchOrgs = fetch("https://api.github.com/users/jwt2706/orgs")
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.status}`);
+                }
+                return response.json();
             })
+            .then((data) => {
+                setOrgs(data);
+            });
+
+        Promise.all([fetchRepos, fetchOrgs])
             .catch((error) => {
-                console.error("Error fetching repos:", error);
+                console.error("Error fetching data:", error);
                 setError(error.message);
+            })
+            .finally(() => {
                 setLoading(false);
             });
     }, []);
@@ -65,32 +88,56 @@ const ProjectFetcher: React.FC = () => {
             ) : error ? (
                 <div className="text-red-500 text-justify bg-gray-800 bg-opacity-75 p-4 rounded-md">
                     <p className="mb-2">{error}</p>
-                    Sorry... There was a problem fetching the repositories from GitHub. Try refreshing the page or visit my <a href="https://github.com/jwt2706" target="_blank" rel="noopener noreferrer" className="text-green-500 underline">GitHub</a> for more projects.
+                    Sorry... There was a problem fetching the repositories or organizations from GitHub. Try refreshing the page or visit my <a href="https://github.com/jwt2706" target="_blank" rel="noopener noreferrer" className="text-green-500 underline">GitHub</a> for more projects.
                 </div>
             ) : (
                 <>
-                    <div className="grid grid-cols-1 gap-8 w-full max-w-4xl px-4">
-                        {repos.map((repo, index) => (
-                            <a key={repo.id} href={repo.html_url} target="_blank" rel="noopener noreferrer" className="repo bg-white bg-opacity-10 backdrop-blur-lg border border-gray-300 rounded-lg p-6 shadow-lg transition-transform transform hover:-translate-y-1 hover:scale-105 duration-300 ease-in-out hover:opacity-100 block" ref={el => cardsRef.current[index] = el!}>
-                                <div className="flex justify-between items-start ">
-                                    <div>
-                                        <h3 className="text-md min-[400px]:text-2xl font-semibold">
-                                            {repo.name}
-                                        </h3>
-                                        <p className="text-sm text-gray-500">Built with: {languages[repo.id]?.join(", ") || "Loading..."}</p>
-                                        <p className="text-left mt-4 text-sm min-[400px]:text-lg">{repo.description}</p>
+                    {/* Organizations Section */}
+                    <div className="w-full max-w-4xl px-4 mb-8">
+                        <h2 className="text-2xl font-bold mb-4 flex items-center gap-2"><FaUsers /> Organisations &amp; Teams</h2>
+                        {orgs.length === 0 ? (
+                            <p className="text-gray-400">No public organizations found.</p>
+                        ) : (
+                            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                                {orgs.map((org) => (
+                                    <a key={org.id} href={org.html_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 bg-white bg-opacity-10 backdrop-blur-lg border border-gray-300 rounded-lg p-4 shadow-md hover:-translate-y-1 hover:scale-105 transition-transform duration-300 ease-in-out">
+                                        <img src={org.avatar_url} alt={org.login} className="w-12 h-12 rounded-full border border-gray-400" />
+                                        <div>
+                                            <h3 className="text-lg font-semibold">{org.login}</h3>
+                                        </div>
+                                    </a>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Personal Projects Section */}
+                    <div className="w-full max-w-4xl px-4">
+                        <h2 className="text-2xl font-bold mb-2 flex items-center gap-2"><FaArchive /> Personal Projects</h2>
+                        <p className="text-gray-400 mb-4 text-base">Experiments, Hackathon submissions, Game jams and more!</p>
+                        <div className="grid grid-cols-1 gap-8">
+                            {repos.map((repo, index) => (
+                                <a key={repo.id} href={repo.html_url} target="_blank" rel="noopener noreferrer" className="repo bg-white bg-opacity-10 backdrop-blur-lg border border-gray-300 rounded-lg p-6 shadow-lg transition-transform transform hover:-translate-y-1 hover:scale-105 duration-300 ease-in-out hover:opacity-100 block">
+                                    <div className="flex justify-between items-start ">
+                                        <div>
+                                            <h3 className="text-md min-[400px]:text-2xl font-semibold">
+                                                {repo.name}
+                                            </h3>
+                                            <p className="text-sm text-gray-500">Built with: {languages[repo.id]?.join(", ") || "Loading..."}</p>
+                                            <p className="text-left mt-4 text-sm min-[400px]:text-lg">{repo.description}</p>
+                                        </div>
+                                        <div className="flex gap-4 text-2xl">
+                                            {repo.homepage && (
+                                                <a href={repo.homepage} target="_blank" rel="noopener noreferrer">
+                                                    <FaExternalLinkAlt className="hover:scale-125 transition-transform duration-300 ease-in-out" />
+                                                </a>
+                                            )}
+                                            <FaGithub className="hover:scale-125 transition-transform duration-300 ease-in-out" />
+                                        </div>
                                     </div>
-                                    <div className="flex gap-4 text-2xl">
-                                        {repo.homepage && (
-                                            <a href={repo.homepage} target="_blank" rel="noopener noreferrer">
-                                                <FaExternalLinkAlt className="hover:scale-125 transition-transform duration-300 ease-in-out" />
-                                            </a>
-                                        )}
-                                        <FaGithub className="hover:scale-125 transition-transform duration-300 ease-in-out" />
-                                    </div>
-                                </div>
-                            </a>
-                        ))}
+                                </a>
+                            ))}
+                        </div>
                     </div>
                     {repos.length > 0 && (
                         <div className="py-4">
