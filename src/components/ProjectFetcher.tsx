@@ -29,7 +29,7 @@ const ProjectFetcher: React.FC = () => {
 
     useEffect(() => {
         // Fetch personal repos
-        const fetchRepos = fetch("https://api.github.com/users/jwt2706/repos")
+        const fetchRepos = fetch("https://api.github.com/users/jwt2706/repos?per_page=100")
             .then((response) => {
                 if (!response.ok) {
                     throw new Error(`Error: ${response.status}`);
