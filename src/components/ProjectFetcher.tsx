@@ -94,14 +94,14 @@ const ProjectFetcher: React.FC = () => {
                 <>
                     {/* Organizations Section */}
                     <div className="w-full max-w-4xl px-4 mb-8">
-                        <h2 className="text-2xl font-bold mb-2 flex items-center gap-2"><FaUsers /> Organisations &amp; Teams</h2>
-                        <p className="text-gray-400 mb-4 text-base">OSS collaborations on robotics, admin tools, games and more!</p>
+                        <h2 className="text-2xl font-bold mb-2 flex items-center gap-2"><FaUsers /> Organisations</h2>
+                        <p className="text-gray-400 mb-4 text-base">Open source team collaborations!</p>
                         {orgs.length === 0 ? (
                             <p className="text-gray-400">No public organizations found.</p>
                         ) : (
                             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                                 {orgs.map((org) => (
-                                    <a key={org.id} href={org.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 bg-white bg-opacity-10 backdrop-blur-lg border border-gray-300 rounded-lg p-4 shadow-md hover:-translate-y-1 hover:scale-105 transition-transform duration-300 ease-in-out">
+                                    <a key={org.id} href={`https://github.com/${org.login}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 bg-white bg-opacity-10 backdrop-blur-lg border border-gray-300 rounded-lg p-4 shadow-md hover:-translate-y-1 hover:scale-105 transition-transform duration-300 ease-in-out">
                                         <img src={org.avatar_url} alt={org.login} className="w-12 h-12 rounded-full border border-gray-400" />
                                         <div>
                                             <h3 className="text-lg font-semibold">{org.login}</h3>
